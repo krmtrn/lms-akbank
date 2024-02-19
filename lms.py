@@ -14,27 +14,27 @@ class Library:
             # The reason why I didn't use readlines() is that it returns a list of lines, and I don't want to print the list with brackets and commas which is not aesthetic.
 
     def removebook(inf):
-        lastdecision = input(f"Are you sure to delete '{choicetodelete}' ? \nYes, Delete '{choicetodelete}' - 1 \nNo, Back to The Menu - 0 \nEnter Key : ")
-        if lastdecision == "1":
-            try:
-                with open("books.txt", "r", encoding="utf-8") as dtbs:
-                    data = dtbs.readlines()
-
-                with open("books.txt", "w", encoding="utf-8") as dtbs:
-                    found = False
-                    for datum in data:
-                        if inf not in datum:
-                            dtbs.write(datum)
-                        else:
-                            found = True
-                            print(f"Line(s) Containing '{inf}' is deleted. \n")
-                    if not found:
-                        print(f"There Is No Such Data Containing '{inf}' In The Database. \n")
-            except Exception as Err:
-                print(f"Unexpected : {Err}")
-        else:
-            pass
- 
+        found = False
+        with open("books.txt", "r", encoding="utf-8") as dtbs:
+            data = dtbs.readlines()
+        for datum in data:
+            if inf in datum:
+                found = True
+                lastdecision = input(f"Are you sure to delete '{inf}' ? \nYes, Delete '{inf}' - 1 \nNo, Back to The Menu - 0 \nEnter Key : ")
+                if lastdecision == "1":
+                    try:
+                        with open("books.txt", "w", encoding="utf-8") as dtbs:
+                            for line in data:
+                                if inf not in line:
+                                    dtbs.write(line)
+                            print(f"Lines Containing '{inf}' are deleted. \n")
+                    except Exception as Err:
+                        print(f"Unexpected : {Err}")
+                else:
+                    print("Deletion canceled. \n")
+        if not found:
+            print(f"Book '{inf}' is not in the file. \n")
+            
     def addbook(data):
         try:
             with open("books.txt", "a", encoding="utf-8") as dtbs:
